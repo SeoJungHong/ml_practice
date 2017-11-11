@@ -21,3 +21,4 @@ tensorflow-tensorboard==0.4.0rc2  # via tensorflow
 tensorflow==1.4.0
 werkzeug==0.12.2          # via tensorflow-tensorboard
 wheel==0.30.0             # via tensorflow, tensorflow-tensorboard
+xlrd==1.1.0
