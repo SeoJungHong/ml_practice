@@ -40,4 +40,22 @@ for file in file_header_map.keys():
         print('save data to {0}'.format(output_filename))
         print('--------------------')
 
+for i in range(1, 11):
+    df_list = []
+    print('merge data from sensor {0}'.format(i))
+    for file in file_header_map.keys():
+        input_filename = '{0}{1}_{2}.csv'.format(DATA_PATH, file.split('.')[0], i)
+        print('read {0}'.format(input_filename))
+        df = pd.read_csv(input_filename)
+        df.info()
+        df_list.append(df)
+    print('* Merge and sort values')
+    merged = pd.concat(df_list)
+    merged.sort_values(by=merged.columns[0], inplace=True)
+    merged.info()
+    output_filename = '{0}merged_{1}.csv'.format(DATA_PATH, i)
+    merged.to_csv(output_filename, index=False)
+    print('save merged data to {0}'.format(output_filename))
+    print('--------------------')
+
 print('Done')
