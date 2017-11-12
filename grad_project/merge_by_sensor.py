@@ -15,7 +15,7 @@ usecols_map = {
     10: [0, 1, 2, 4, 5, 6],
 }
 
-for i in range(10, 11):
+for i in range(1, 11):
     df_list = []
     print('merge data from sensor {0}'.format(i))
     for file in RAW_FILES:
@@ -23,7 +23,6 @@ for i in range(10, 11):
         print('read {0}'.format(input_filename))
         df = pd.read_csv(input_filename, usecols=usecols_map.get(i))
         df_list.append(df)
-    print('merge and sort values')
     merged = pd.concat(df_list)
     if i < 10:  # 기상 센서가 아닐때
         prefix = 'N{0} '.format(i)
@@ -40,13 +39,7 @@ for i in range(10, 11):
         columns.remove('CO2')
         columns.append('CO2')
         merged = merged[columns]
-    merged.sort_values(by=merged.columns[0], inplace=True)
-    print('remove empty rows')
-    merged[merged.columns[0]] = pd.DatetimeIndex(merged[merged.columns[0]])
-    merged["TMP"] = merged[merged.columns[0]]
-    merged = merged[merged.TMP.notnull()]  # remove all NaT values
-    merged.drop(["TMP"], axis=1, inplace=True)  # delete TMP again
-    merged.info()
+    print(merged.head())
     output_filename = '{0}merged_{1}.csv'.format(DATA_PATH, i)
     merged.to_csv(output_filename, index=False)
     print('save merged data to {0}'.format(output_filename))
