@@ -2,3 +2,4 @@ tensorflow==1.4.0
 pandas==0.21.0
 xlrd==1.1.0
 pip-tools==1.10.1
+scipy==1.0.0

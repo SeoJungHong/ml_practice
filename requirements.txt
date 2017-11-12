@@ -10,12 +10,13 @@ enum34==1.1.6             # via tensorflow
 first==2.0.1              # via pip-tools
 html5lib==0.9999999       # via bleach, tensorflow-tensorboard
 markdown==2.6.9           # via tensorflow-tensorboard
-numpy==1.13.3             # via pandas, tensorflow, tensorflow-tensorboard
+numpy==1.13.3             # via pandas, scipy, tensorflow, tensorflow-tensorboard
 pandas==0.21.0
 pip-tools==1.10.1
 protobuf==3.4.0           # via tensorflow, tensorflow-tensorboard
 python-dateutil==2.6.1    # via pandas
 pytz==2017.3              # via pandas
+scipy==1.0.0
 six==1.11.0               # via bleach, html5lib, pip-tools, protobuf, python-dateutil, tensorflow, tensorflow-tensorboard
 tensorflow-tensorboard==0.4.0rc2  # via tensorflow
 tensorflow==1.4.0
