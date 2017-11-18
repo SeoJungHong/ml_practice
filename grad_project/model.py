@@ -138,7 +138,6 @@ for epoch in range(TRAINING_EPOCHS):
         summary, _ = sess.run([merged, optimizer], feed_dict={x: batch_xs, y: batch_ys, dropout_keep_prob: 0.7})
         # Compute average loss
         avg_cost += sess.run(cost, feed_dict={x: batch_xs, y: batch_ys, dropout_keep_prob: 1.}) / total_batch
-
         summary_writer.add_summary(summary, epoch * total_batch + i)
 
     # Display logs per epoch step

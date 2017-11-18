@@ -45,7 +45,7 @@ for i in range(1, 11):
     merged.drop(["TMP"], axis=1, inplace=True)  # delete TMP again
     merged = merged[merged['날짜'] != '===============']
     merged[merged.columns[0]] = pd.DatetimeIndex(merged[merged.columns[0]])
-    merged = merged[merged['날짜'] >= pd.datetime(2016, 7, 27, 19)]
+    merged = merged[merged['날짜'] >= pd.datetime(2016, 8, 4, 12)]
     merged.sort_values(by='날짜')
     merged.info()
     output_filename = '{0}merged_{1}.csv'.format(DATA_PATH, i)
