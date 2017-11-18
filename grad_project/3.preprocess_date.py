@@ -1,9 +1,11 @@
 import pandas as pd
 
-from grad_project.constants import MERGED_CSV_FILES
+from grad_project.constants import DATA_PATH
 
 # Round time in 10 min range and fill empty time rows
 DATE_RANGE = pd.date_range('2016-08-04 12:00', '2017-08-31 23:50', freq='10min')
+MERGED_CSV_FILES = ['{0}merged_{1}.csv'.format(DATA_PATH, i) for i in range(1, 11)]
+
 for filename in MERGED_CSV_FILES:
     print('reading {0}'.format(filename))
     df = pd.read_csv(filename, index_col=0)

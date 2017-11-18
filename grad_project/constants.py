@@ -15,4 +15,3 @@ RAW_FILES = [
     '1707.xlsx',
     '1708.xlsx'
 ]
-MERGED_CSV_FILES = ['{0}merged_{1}.csv'.format(DATA_PATH, i) for i in range(1, 11)]
