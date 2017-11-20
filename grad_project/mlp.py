@@ -4,20 +4,19 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-N_INPUT = 10
+N_INPUT = 7
 N_LAYER_1 = 256
 N_LAYER_2 = 256
 N_OUTPUT = 1
-N_TRAIN_DATA = 40000
 
 # Parameters
 LEARNING_RATE = 0.001
 TRAINING_EPOCHS = 5000
 BATCH_SIZE = 5000
-DISPLAY_STEP = 50
+DISPLAY_STEP = 100
 
-INPUT_DATA = 'data/simple_interpolate.csv'
-
+INPUT_DATA = 'data/raw_data.csv'
+OUTPUT_MODEL_NAME = 'model/mlp.ckpt'
 
 def multilayer_perceptron(x, weights, biases, keep_prob):
     with tf.variable_scope("LAYER_1"):
@@ -35,9 +34,9 @@ def normalize(data):
 
 
 # Data Loading
-data = pd.read_csv(INPUT_DATA, index_col=0)
-train_data = data.iloc[:N_TRAIN_DATA]
-test_data = data.iloc[N_TRAIN_DATA:]
+data = pd.read_csv(INPUT_DATA, index_col=0).dropna()
+test_data = data.sample(frac=0.2)
+train_data = data.drop(test_data.index)
 columns = train_data.columns.tolist()
 label_column = columns.pop()  # Last column is label
 
@@ -63,6 +62,7 @@ train_data_label = train_data_label.as_matrix().reshape(-1, 1)  # inversion
 test_data_label = test_data_label.as_matrix().reshape(-1, 1)  # inversion
 
 # Normalizing
+# 0~1 로 변경
 for data in [train_data, train_data_label, test_data, test_data_label]:
     normalize(data)
 
@@ -102,7 +102,7 @@ with tf.variable_scope("BIASES"):
 pred = multilayer_perceptron(x, weights, biases, dropout_keep_prob)
 
 # Define loss and optimizer
-cost = tf.reduce_sum(tf.square(tf.subtract(y, pred)))  # RMS
+cost = tf.reduce_sum(tf.square(tf.subtract(y, pred)))  # RMSE
 optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)  # Adam Optimizer
 
 # Accuracy
@@ -124,6 +124,7 @@ directory_name = 'logs'
 summary_writer = tf.summary.FileWriter(directory_name, graph=sess.graph)
 
 num_data = train_data.shape[0]
+saver = tf.train.Saver()
 
 start = time.time()
 # Training cycle
@@ -142,11 +143,13 @@ for epoch in range(TRAINING_EPOCHS):
 
     # Display logs per epoch step
     if epoch % DISPLAY_STEP == 0:
-        print("Epoch: %04d/%04d cost: %.6f" % epoch, TRAINING_EPOCHS, avg_cost)
+        print("Epoch: %04d/%04d cost: %.6f" % (epoch, TRAINING_EPOCHS, avg_cost))
         train_acc = sess.run(accuracy, feed_dict={x: batch_xs, y: batch_ys, dropout_keep_prob: 1.})
         print("Training accuracy: %.3f" % train_acc)
         test_acc = sess.run(accuracy, feed_dict={x: test_data, y: test_data_label, dropout_keep_prob: 1.})
         print("Test R-Squared : %.3f" % test_acc)
+        print("Save model as " + OUTPUT_MODEL_NAME)
+        saver.save(sess, OUTPUT_MODEL_NAME)
 
     # Early Stopper
     """if i >= 50:

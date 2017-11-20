@@ -1,8 +1,7 @@
+import pandas as pd
+
 DATA_PATH = 'data/'
 RAW_FILES = [
-    '1607.xlsx',
-    '1608.xlsx',
-    '1609.xlsx',
     '1610.xlsx',
     '1611.xlsx',
     '1612.xlsx',
@@ -15,3 +14,4 @@ RAW_FILES = [
     '1707.xlsx',
     '1708.xlsx'
 ]
+DATE_RANGE = pd.date_range('2016-10-02 00:10', '2017-08-31 23:50', freq='10min')

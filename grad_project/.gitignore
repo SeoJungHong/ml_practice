@@ -1,2 +1,4 @@
 # Data dir
 data/
+model/
+logs/
