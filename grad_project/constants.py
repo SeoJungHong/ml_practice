@@ -1,6 +1,7 @@
 import pandas as pd
 
 DATA_PATH = 'data/'
+OUTPUT_PATH = 'output/'
 RAW_FILES = [
     '1610.xlsx',
     '1611.xlsx',

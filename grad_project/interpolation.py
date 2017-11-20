@@ -1,6 +1,6 @@
 import pandas as pd
 
-from grad_project.constants import DATA_PATH, DATE_RANGE
+from grad_project.constants import DATA_PATH, DATE_RANGE, OUTPUT_PATH
 
 raw_data_file = '{0}raw_data.csv'.format(DATA_PATH)
 
@@ -32,3 +32,4 @@ if __name__ == "__main__":
             interpolated = interpolation_method(train_data)
             rmse[index] = ((interpolated - test_data) ** 2).mean(0) ** 0.5
         print(rmse)
+        rmse.to_csv('{0}{1}_result.csv'.format(OUTPUT_PATH, interpolation_method.__name__))
