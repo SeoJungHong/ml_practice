@@ -20,8 +20,7 @@ for column in raw_data.columns:
         regressor.fit(train_index_arr, train_data[column])
         test_index_arr = np.array(test_data.index).reshape(-1, 1)
         result = regressor.predict(test_index_arr)
-        d = {column: pd.Series(result, index=test_data.index)}
-        result_df = pd.DataFrame(d)
+        result_df = pd.DataFrame({column: pd.Series(result, index=test_data.index)})
         print('result')
         print(result_df.head())
         column_rmse[index] = ((result_df - test_data) ** 2).mean(0) ** 0.5
