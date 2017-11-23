@@ -1,7 +1,7 @@
 import pandas as pd
 from fbprophet import Prophet
 
-from grad_project.constants import OUTPUT_PATH
+from grad_project.constants import OUTPUT_PATH, TEST_RATIO
 
 raw_data = pd.read_csv('data/raw_data.csv', parse_dates=[0])
 columns = raw_data.columns[1:]
@@ -14,7 +14,7 @@ for column in columns:
     print(data.head())
     column_rmse = pd.DataFrame()
     for index in range(1, 11):
-        test_data = data.dropna().sample(frac=0.1)
+        test_data = data.dropna().sample(frac=TEST_RATIO)
         # train_data = data.drop(test_data.index)
         prophet = Prophet(yearly_seasonality=True, daily_seasonality=True)
         prophet.fit(data)

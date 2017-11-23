@@ -16,3 +16,4 @@ RAW_FILES = [
     '1708.xlsx'
 ]
 DATE_RANGE = pd.date_range('2016-10-02 00:10', '2017-08-31 23:50', freq='10min')
+TEST_RATIO = 0.1
