@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
@@ -12,7 +14,7 @@ FEATURE_MAP = {
     's_rh': ['date', 'temp', 'rh', 's_temp'],
     'ec': ['date', 's_temp', 's_rh', 'rad', 'co2'],
     'atm': ['date', 'temp', 'rh'],
-    'rad': ['date'],
+    'rad': ['date', 'atm'],
     'co2': ['date', 'temp', 'rh', 'atm', 'rad'],
 }
 
@@ -45,7 +47,7 @@ for regressor_type in ['random_forest', 'mlp']:
         else:
             regressor = MLPRegressor(
                 learning_rate_init=0.001,
-                max_iter=500,
+                max_iter=5000,
                 batch_size=5000,
                 early_stopping=True,
                 hidden_layer_sizes=(256, 256),
@@ -60,7 +62,9 @@ for regressor_type in ['random_forest', 'mlp']:
         print(train_x)
         print('test_x')
         print(test_x)
+        start = time.time()
         regressor.fit(train_x, train_y)
+        training_time = time.time() - start
         raw_pred_y = regressor.predict(test_x)
         pred_y = pd.DataFrame({column: pd.Series(raw_pred_y, index=test_y.index)})
         print('##### Result #####')
@@ -70,6 +74,7 @@ for regressor_type in ['random_forest', 'mlp']:
         print(pred_y.head())
         rmse_value = (((test_y - pred_y) ** 2).mean(0) ** 0.5).values[0]
         rmse.set_value(column, rmse_value)
+        rmse.set_value(column + '_time', training_time)
         r_square_value = regressor.score(test_x, test_y)
         r_square.set_value(column, r_square_value)
         print('RMSE')
