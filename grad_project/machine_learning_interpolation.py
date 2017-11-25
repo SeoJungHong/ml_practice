@@ -8,11 +8,12 @@ from grad_project.constants import OUTPUT_PATH, TEST_RATIO
 
 raw_data = pd.read_csv('data/raw_data.csv', parse_dates=[0], index_col=0)
 raw_data.dropna(inplace=True)
-rmse = pd.DataFrame()
-r_square = pd.DataFrame()
+
 for regressor_type in ['random_forest', 'support_vector_machine']:
     print('***** Training Start *****')
     print(regressor_type)
+    rmse = pd.DataFrame()
+    r_square = pd.DataFrame()
     for column in raw_data.columns:
         print('processing {0}'.format(column))
         data = raw_data[[column]]
