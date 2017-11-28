@@ -18,17 +18,11 @@ def spline(data):
     return result_df
 
 
-def polynomial(data):
-    result_df = data.interpolate('polynomial', order=3, s=0)
-    result_df.to_csv('{0}processed_polynomial.csv'.format(DATA_PATH))
-    return result_df
-
-
 if __name__ == "__main__":
     df = pd.read_csv(raw_data_file, index_col=0, parse_dates=[0])
     print('raw data')
     df.info()
-    for interpolation_method in [linear, spline, polynomial]:
+    for interpolation_method in [linear, spline]:
         rmse = pd.DataFrame()
         r_square = pd.DataFrame()
         print('start new method: ' + interpolation_method.__name__)
