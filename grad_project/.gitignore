@@ -1,5 +1,5 @@
-# Data dir
 data/
 model/
 logs/
 output/
+result/
