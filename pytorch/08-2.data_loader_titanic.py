@@ -6,8 +6,11 @@ from torch.utils.data import Dataset, DataLoader
 
 class TitanicDataset(Dataset):
     # Initialize your data, download, etc.
-    def __init__(self):
-        df = pd.read_csv('./data/TITANIC/train.csv', header=0, index_col=0)
+    def __init__(self, test=False):
+        # filename = './data/TITANIC/{0}'.format('test.csv' if test else 'train.csv')
+        # TODO : 현재는 Test dataset 에 결과값이 없어서 무의미
+        filename = './data/TITANIC/{0}'.format('train.csv')
+        df = pd.read_csv(filename, header=0, index_col=0)
         df = df.drop(['Name', 'Ticket', 'Cabin'], axis=1)
 
         # Fill missing data: Age and Fare with the mean, Embarked with most frequent value
@@ -59,11 +62,15 @@ class Model(torch.nn.Module):
         return y_pred
 
 
-dataset = TitanicDataset()
-train_loader = DataLoader(dataset=dataset,
+train_loader = DataLoader(dataset=TitanicDataset(),
                           batch_size=32,
                           shuffle=True,
                           num_workers=2)
+
+# test_loader = DataLoader(dataset=TitanicDataset(True),
+#                          batch_size=32,
+#                          shuffle=True,
+#                          num_workers=2)
 
 model = Model()
 # Construct our loss function and an Optimizer. The call to model.parameters()
@@ -89,5 +96,6 @@ for epoch in range(100):
         optimizer.zero_grad()
         loss.backward()  # Calculate Gradients
         optimizer.step()  # Update Gradients
-    print(epoch, loss.data[0])
-    print("##### Training epoch ", epoch, " ended")
+        if not batch_index % 10:
+            print("batch_index", batch_index, loss)
+    print("##### Training epoch", epoch, "ended", "loss", loss)
