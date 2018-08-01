@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import torch
 from torch.autograd import Variable
@@ -74,21 +73,21 @@ criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.1)
 
 model.train()
-for epoch in range(10):
+for epoch in range(100):
     print("##### Training epoch ", epoch, " started")
     for batch_index, (inputs, labels) in enumerate(train_loader):
         inputs, labels = Variable(inputs).float(), Variable(labels)
         # inputs, labels = Variable(torch.FloatTensor(inputs)), Variable(torch.LongTensor(labels))
         # Run your training process
-        print(batch_index, "inputs : ", inputs.data, "labels : ", labels.data)
+        # print(batch_index, "inputs : ", inputs.data, "labels : ", labels.data)
 
         # Forward pass: Compute predicted y by passing x to the model
         outputs = model(inputs)
         # Compute and print loss
         loss = criterion(outputs, labels)
-        print(epoch, loss.data[0])
         # Zero gradients, perform a backward pass, and update the weights.
         optimizer.zero_grad()
         loss.backward()  # Calculate Gradients
         optimizer.step()  # Update Gradients
+    print(epoch, loss.data[0])
     print("##### Training epoch ", epoch, " ended")
